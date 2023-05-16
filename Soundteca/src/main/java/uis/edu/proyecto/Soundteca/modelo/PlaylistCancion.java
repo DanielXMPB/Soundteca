@@ -1,5 +1,6 @@
 package uis.edu.proyecto.Soundteca.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,6 +47,7 @@ public class PlaylistCancion {
         this.id_playlist_cancion = id_playlist_cancion;
     }
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Playlist getId_playlist() {
         return id_playlist;
     }
@@ -54,6 +56,7 @@ public class PlaylistCancion {
         this.id_playlist = id_playlist;
     }
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Cancion getId_cancion() {
         return id_cancion;
     }

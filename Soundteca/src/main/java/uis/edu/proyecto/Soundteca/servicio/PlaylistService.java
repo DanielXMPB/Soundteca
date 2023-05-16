@@ -2,6 +2,7 @@ package uis.edu.proyecto.Soundteca.servicio;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import uis.edu.proyecto.Soundteca.repositorio.PlaylistRepositorio;
 @Service
 public class PlaylistService implements IPlaylistService{
 
+    @Autowired
     private PlaylistRepositorio playlistRepositorio;
 
     @Override
