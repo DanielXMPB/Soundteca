@@ -37,6 +37,11 @@ public class UsuarioService implements IUsuarioService {
     }
     
     @Override
+    public Optional<Usuario> findByNombre(String nombre){
+        return usuarioRepositorio.findByNombre(nombre);
+    }
+    
+    @Override
     public Usuario create(Usuario usuario) {
         return usuarioRepositorio.save(usuario);
     }

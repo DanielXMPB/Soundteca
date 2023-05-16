@@ -19,16 +19,16 @@ public class ArtistaAlbum {
 
     @ManyToOne
     @JoinColumn(name = "id_artista")
-    private int id_artista;
+    private Artista id_artista;
 
     @ManyToOne
     @JoinColumn(name = "id_album")
-    private int id_album;
+    private Album id_album;
 
     public ArtistaAlbum() {
     }
 
-    public ArtistaAlbum(int id_artista_album, int id_artista, int id_album) {
+    public ArtistaAlbum(int id_artista_album, Artista id_artista, Album id_album) {
         this.id_artista_album = id_artista_album;
         this.id_artista = id_artista;
         this.id_album = id_album;
@@ -42,20 +42,20 @@ public class ArtistaAlbum {
         this.id_artista_album = id_artista_album;
     }
 
-    public int getId_artista() {
+    public Artista getId_artista() {
         return id_artista;
     }
 
-    public void setId_artista(int id_artista) {
+    public void setId_artista(Artista id_artista) {
         this.id_artista = id_artista;
     }
 
-    public int getId_album() {
+    public Album getId_album() {
         return id_album;
     }
 
-    public void setId_album(int id_album) {
+    public void setId_album(Album id_album) {
         this.id_album = id_album;
     }
-
+    
 }

@@ -20,7 +20,7 @@ public class Favoritos {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private int id_usuario;
+    private Usuario id_usuario;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
@@ -28,7 +28,7 @@ public class Favoritos {
     public Favoritos() {
     }
 
-    public Favoritos(int id_favoritos, int id_usuario, String nombre) {
+    public Favoritos(int id_favoritos, Usuario id_usuario, String nombre) {
         this.id_favoritos = id_favoritos;
         this.id_usuario = id_usuario;
         this.nombre = nombre;
@@ -42,11 +42,11 @@ public class Favoritos {
         this.id_favoritos = id_favoritos;
     }
 
-    public int getId_usuario() {
+    public Usuario getId_usuario() {
         return id_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
+    public void setId_usuario(Usuario id_usuario) {
         this.id_usuario = id_usuario;
     }
 

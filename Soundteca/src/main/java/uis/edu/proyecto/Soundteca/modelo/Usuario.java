@@ -51,6 +51,13 @@ public class Usuario {
         this.id_tipo_usuario = id_tipo_usuario;
     }
 
+    public Usuario(String nombre, String correo, String contrasena, TipoUsuario id_tipo_usuario) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.id_tipo_usuario = id_tipo_usuario;
+    }
+
     public int getId_usuario() {
         return id_usuario;
     }

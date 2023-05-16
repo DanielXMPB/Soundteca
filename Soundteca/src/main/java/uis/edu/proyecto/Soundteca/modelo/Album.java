@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 public class Album {
     public static final String TABLE_NAME = "album";
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_album;

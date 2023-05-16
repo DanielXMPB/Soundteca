@@ -18,6 +18,7 @@ public interface IUsuarioService {
     
     List<Usuario> findAll();
     Optional<Usuario> findById(Integer id);
+    Optional<Usuario> findByNombre(String nombre);
     Usuario create(Usuario usuario);
     Usuario update(Usuario usuario);
     void delete(Integer id);

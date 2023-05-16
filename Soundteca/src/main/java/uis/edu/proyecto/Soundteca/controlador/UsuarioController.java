@@ -38,14 +38,21 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findAll());
     }
     
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable("id") Integer id) {
         return usuarioService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @PostMapping
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Usuario> findByNombre(@PathVariable("nombre") String nombre) {
+        return usuarioService.findByNombre(nombre)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @PostMapping("/crear")
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
         return new ResponseEntity<>(usuarioService.create(usuario), HttpStatus.CREATED);
     }

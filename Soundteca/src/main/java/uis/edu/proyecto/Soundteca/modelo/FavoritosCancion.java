@@ -19,16 +19,16 @@ public class FavoritosCancion {
 
     @ManyToOne
     @JoinColumn(name = "id_favoritos")
-    private int id_favoritos;
+    private Favoritos id_favoritos;
 
     @ManyToOne
     @JoinColumn(name = "id_cancion")
-    private int id_cancion;
+    private Cancion id_cancion;
 
     public FavoritosCancion() {
     }
 
-    public FavoritosCancion(int id_favoritos_cancion, int id_favoritos, int id_cancion) {
+    public FavoritosCancion(int id_favoritos_cancion, Favoritos id_favoritos, Cancion id_cancion) {
         this.id_favoritos_cancion = id_favoritos_cancion;
         this.id_favoritos = id_favoritos;
         this.id_cancion = id_cancion;
@@ -43,19 +43,19 @@ public class FavoritosCancion {
         this.id_favoritos_cancion = id_favoritos_cancion;
     }
 
-    public int getId_favoritos() {
+    public Favoritos getId_favoritos() {
         return id_favoritos;
     }
 
-    public void setId_favoritos(int id_favoritos) {
+    public void setId_favoritos(Favoritos id_favoritos) {
         this.id_favoritos = id_favoritos;
     }
 
-    public int getId_cancion() {
+    public Cancion getId_cancion() {
         return id_cancion;
     }
 
-    public void setId_cancion(int id_cancion) {
+    public void setId_cancion(Cancion id_cancion) {
         this.id_cancion = id_cancion;
     }
 }

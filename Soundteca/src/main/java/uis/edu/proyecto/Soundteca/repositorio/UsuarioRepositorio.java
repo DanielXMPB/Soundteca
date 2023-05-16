@@ -4,6 +4,7 @@
  */
 package uis.edu.proyecto.Soundteca.repositorio;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,8 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer>{
     
     @Query(value = "select * from usuario as p where p.correo = :correo and p.contrasena = :contrasena", nativeQuery=true)
     Usuario findByCorreoAndContrasena(@Param("correo") String correo, @Param("contrasena") String contrasena);
+    
+    @Query(value = "select * from usuario u where u.nombre = :nombre and u.id_tipo_usuario = 2;", nativeQuery=true)
+    Optional<Usuario> findByNombre(@Param("nombre") String nombre);
     
 }

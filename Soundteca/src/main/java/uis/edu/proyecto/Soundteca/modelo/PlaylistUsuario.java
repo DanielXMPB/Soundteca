@@ -19,16 +19,16 @@ public class PlaylistUsuario {
 
     @ManyToOne
     @JoinColumn(name = "id_playlist")
-    private int id_playlist;
+    private Playlist id_playlist;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private int id_usuario;
+    private Usuario id_usuario;
 
     public PlaylistUsuario() {
     }
 
-    public PlaylistUsuario(int id_playlist_usuario, int id_playlist, int id_usuario) {
+    public PlaylistUsuario(int id_playlist_usuario, Playlist id_playlist, Usuario id_usuario) {
         this.id_playlist_usuario = id_playlist_usuario;
         this.id_playlist = id_playlist;
         this.id_usuario = id_usuario;
@@ -42,19 +42,19 @@ public class PlaylistUsuario {
         this.id_playlist_usuario = id_playlist_usuario;
     }
 
-    public int getId_playlist() {
+    public Playlist getId_playlist() {
         return id_playlist;
     }
 
-    public void setId_playlist(int id_playlist) {
+    public void setId_playlist(Playlist id_playlist) {
         this.id_playlist = id_playlist;
     }
 
-    public int getId_usuario() {
+    public Usuario getId_usuario() {
         return id_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
+    public void setId_usuario(Usuario id_usuario) {
         this.id_usuario = id_usuario;
     }
 
