@@ -22,8 +22,8 @@ public class Cancion {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "id_album")
-    private Album id_album;
+    @JoinColumn(name = "id_artista_album")
+    private ArtistaAlbum id_artista_album;
 
     @ManyToOne
     @JoinColumn(name = "id_genero")
@@ -32,10 +32,10 @@ public class Cancion {
     public Cancion(){
     }
 
-    public Cancion(int id_cancion, String nombre, Album id_album, Genero id_genero) {
+    public Cancion(int id_cancion, String nombre, ArtistaAlbum id_artista_album, Genero id_genero) {
         this.id_cancion = id_cancion;
         this.nombre = nombre;
-        this.id_album = id_album;
+        this.id_artista_album = id_artista_album;
         this.id_genero = id_genero;
     }
 
@@ -55,12 +55,12 @@ public class Cancion {
         this.nombre = nombre;
     }
 
-    public Album getId_album() {
-        return id_album;
+    public ArtistaAlbum getId_artista_album() {
+        return id_artista_album;
     }
 
-    public void setId_album(Album id_album) {
-        this.id_album = id_album;
+    public void setId_artista_album(ArtistaAlbum id_artista_album) {
+        this.id_artista_album = id_artista_album;
     }
 
     public Genero getId_genero() {

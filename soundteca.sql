@@ -40,9 +40,9 @@ create table soundteca.genero(
 create table soundteca.cancion(
 	id_cancion int primary key,
 	nombre varchar(50) not null,
-	id_album int not null,
+	id_artista_album int not null,
 	id_genero int not null,
-	foreign key (id_album) references soundteca.album(id_album),
+	foreign key (id_artista_album) references soundteca.artista_album(id_artista_album),
 	foreign key (id_genero) references soundteca.genero(id_genero)
 );
 
@@ -62,24 +62,18 @@ create table soundteca.favoritos_cancion(
 );
 
 create table soundteca.playlist(
-	id_playlist int primary key,
-	nombre varchar(50) not null
+	id_playlist int primary key auto_increment,
+	nombre varchar(50) not null,
+	id_usuario int not null,
+	foreign key (id_usuario) references soundteca.usuario(id_usuario)
 );
 
 create table soundteca.playlist_cancion(
-	id_playlist_cancion int primary key,
+	id_playlist_cancion int primary key auto_increment,
 	id_playlist int not null,
 	id_cancion int not null,
 	foreign key (id_playlist) references soundteca.playlist(id_playlist),
 	foreign key (id_cancion) references soundteca.cancion(id_cancion)
-);
-
-create table soundteca.playlist_usuario(
-	id_playlist_usuario int primary key,
-	id_playlist int not null,
-	id_usuario int not null,
-	foreign key (id_playlist) references soundteca.playlist(id_playlist),
-	foreign key (id_usuario) references soundteca.usuario(id_usuario)
 );
 
 insert into soundteca.tipo_usuario (id_tipo_usuario, nombre_tipo) values (1, "Administrador");
@@ -90,10 +84,10 @@ insert into soundteca.artista (id_artista, nombre) values (1, "The Weeknd");
 insert into soundteca.album  (id_album, nombre) values (1, "Dawn FM");
 insert into soundteca.artista_album (id_artista_album, id_artista, id_album) values (1, 1, 1);
 insert into soundteca.genero (id_genero, nombre) values (1, "Pop");
-insert into soundteca.cancion (id_cancion, nombre, id_album, id_genero) values (1, "Dawn FM", 1, 1);
-insert into soundteca.cancion (id_cancion, nombre, id_album, id_genero) values (2, "Gasoline", 1, 1);
-insert into soundteca.cancion (id_cancion, nombre, id_album, id_genero) values (3, "How Do I Make You Love Me?", 1, 1);
-insert into soundteca.playlist (id_playlist, nombre) values (1, "Canciones Pop");
+insert into soundteca.cancion (id_cancion, nombre, id_artista_album, id_genero) values (1, "Dawn FM", 1, 1);
+insert into soundteca.cancion (id_cancion, nombre, id_artista_album, id_genero) values (2, "Gasoline", 1, 1);
+insert into soundteca.cancion (id_cancion, nombre, id_artista_album, id_genero) values (3, "How Do I Make You Love Me?", 1, 1);
+insert into soundteca.playlist (id_playlist, nombre, id_usuario) values (1, "Canciones Pop", 1);
 insert into soundteca.playlist_cancion (id_playlist_cancion, id_playlist, id_cancion) values (1, 1, 1);
 
 

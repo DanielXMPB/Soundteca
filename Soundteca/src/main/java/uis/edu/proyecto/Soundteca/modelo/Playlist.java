@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,16 +22,18 @@ public class Playlist {
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario id_usuario;
 
     public Playlist() {
     }
 
-
-    public Playlist(int id_playlist, String nombre) {
+    public Playlist(int id_playlist, String nombre, Usuario id_usuario) {
         this.id_playlist = id_playlist;
         this.nombre = nombre;
+        this.id_usuario = id_usuario;
     }
-
 
     public int getId_playlist() {
         return id_playlist;
@@ -48,6 +52,14 @@ public class Playlist {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Usuario getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Usuario id_usuario) {
+        this.id_usuario = id_usuario;
     }
     
 }
