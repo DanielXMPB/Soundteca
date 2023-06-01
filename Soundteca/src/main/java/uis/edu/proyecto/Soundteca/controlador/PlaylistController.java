@@ -36,6 +36,14 @@ public class PlaylistController {
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Playlist> findByNombre(@PathVariable("nombre") String nombre) {
+        return playlistService.findByNombre(nombre)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
     @PostMapping
     public ResponseEntity<Playlist> create(@RequestBody Playlist playlist) {
         return new ResponseEntity<>(playlistService.create(playlist), HttpStatus.CREATED);
@@ -48,8 +56,8 @@ public class PlaylistController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping
-    public ResponseEntity<Playlist> delete(Integer id) {
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Playlist> delete(@PathVariable("id") Integer id) {
         return playlistService.findById(id)
                 .map(c -> {
                     playlistService.delete(id);

@@ -15,5 +15,5 @@ public interface PlaylistRepositorio extends JpaRepository<Playlist, Integer>{
     Integer findNumberByPlaylist(@Param("nombre") String nombre);
     
     @Query(value = "select * from usuario as p where p.nombre = :nombre", nativeQuery=true)
-    Playlist findByNombre(@Param("nombre") String correo);
+    Playlist findByNombre(@Param("nombre") String nombre);
 }

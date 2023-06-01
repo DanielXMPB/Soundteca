@@ -12,6 +12,7 @@ public interface IPlaylistService {
     
     List<Playlist> findAll();
     Optional<Playlist> findById(Integer id);
+    Optional<Playlist> findByNombre(String nombre);
     Playlist create(Playlist playlist);
     Playlist update(Playlist playlist);
     void delete(Integer id);

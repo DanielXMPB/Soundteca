@@ -20,6 +20,11 @@ public class PlaylistService implements IPlaylistService{
         return playlistRepositorio.findAll();
     }
 
+    @Override 
+    public Optional<Playlist> findByNombre(String nombre){
+        return playlistRepositorio.findByNombre(nombre);
+    }
+
     @Override
     public Optional<Playlist> findById(Integer id) {
         return playlistRepositorio.findById(id);
