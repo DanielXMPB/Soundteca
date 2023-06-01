@@ -9,9 +9,9 @@ function registarUsuario(){
     let password1 = document.getElementById("Password").value
     let password2 = document.getElementById("RepeatPassword").value
     let data = {"nombre": nombre, "correo": email, "contrasena": password1,
-    "tipo_usuario": { "id_tipo_usuario": 1}}
+        "tipo_usuario": { "id_tipo_usuario": 2}}
     if (password1 === password2){
-        let request = sendRequest('apii/usuario/crear', 'POST', data)
+        let request = sendRequest('api/usuario/crear', 'POST', data)
         request.onload = function(){
             alert("El usuario se ha creado correctamente")
             window.location = 'index.html'
