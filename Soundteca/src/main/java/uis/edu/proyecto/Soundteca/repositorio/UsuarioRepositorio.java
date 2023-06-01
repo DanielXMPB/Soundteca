@@ -22,7 +22,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer>{
     @Query(value = "select * from usuario as p where p.correo = :correo and p.contrasena = :contrasena", nativeQuery=true)
     Usuario findByCorreoAndContrasena(@Param("correo") String correo, @Param("contrasena") String contrasena);
     
-    @Query(value = "select * from usuario u where u.nombre = :nombre and u.id_tipo_usuario = 2;", nativeQuery=true)
+    @Query(value = "select * from usuario u where u.nombre = :nombre", nativeQuery=true)
     Optional<Usuario> findByNombre(@Param("nombre") String nombre);
     
 }

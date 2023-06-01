@@ -63,8 +63,8 @@ public class UsuarioController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @DeleteMapping
-    public ResponseEntity<Usuario> delete(Integer id) {
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Usuario> delete(@PathVariable("id") Integer id) {
         return usuarioService.findById(id)
                 .map(c -> {
                     usuarioService.delete(id);
