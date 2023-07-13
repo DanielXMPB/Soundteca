@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import APIInvoke from "../../utils/APIInvoke";
+import swal from "sweetalert";
 
 const CrearCuenta = () => {
 
@@ -9,7 +11,7 @@ const CrearCuenta = () => {
         confirmar: ''
     });
 
-    const {nombre, correo, contrasenna, confirmar} = usuario;
+    const { nombre, correo, contrasenna, confirmar } = usuario;
 
     const onChange = (e) => {
         setUsuario({
@@ -18,16 +20,71 @@ const CrearCuenta = () => {
         })
     }
 
+    useEffect(() => {
+        document.getElementById("nombre").focus();
+    }, [])
+
+    const crearCuenta = async () => {
+        if (contrasenna !== confirmar) {
+            const msg = "Las contraseñas son diferentes.";
+            swal({
+                title: "Error",
+                text: msg,
+                icon: 'error',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-danger',
+                        closeModal: true
+                    }
+                }
+            });
+        } else {
+            const data = {
+                nombre: usuario.nombre,
+                correo: usuario.correo,
+                contrasenna: usuario.contrasenna
+            }
+            const response = await APIInvoke.invokePOST('/registrar', data);
+            const mensaje = response.msg;
+
+            if (mensaje === 'El usuario ya existe') {
+                const msg = "El usuario ya existe";
+                swal({
+                    title: "Error",
+                    text: msg,
+                    icon: 'error',
+                    buttons: {
+                        confirm: {
+                            text: 'ok',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-danger',
+                            closeModal: true
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        crearCuenta();
+    }
+
     return (
         <div className="hold-transition register-page">
             <div className="register-box">
                 <div className="register-logo">
-                    <a href="../../index2.html"><b>Registro</b></a>
+                    <p><b>Registro</b></p>
                 </div>
                 <div className="card">
                     <div className="card-body register-card-body">
                         <p className="login-box-msg">Registrar usuario</p>
-                        <form action="../../index.html" method="post">
+                        <form onSubmit={onSubmit}>
                             <div className="input-group mb-3">
                                 <input
                                     type="text"
