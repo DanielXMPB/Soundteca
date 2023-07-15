@@ -1,7 +1,63 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import APIInvoke from "../../utils/APIInvoke";
+import swal from "sweetalert";
 
 const Login = () => {
+
+    const navigate = useNavigate();
+
+    const [usuario, setUsuario] = useState({
+        correo: '',
+        contrasenna: ''
+    });
+
+    const {correo, contrasenna} = usuario;
+
+    const onChange = (e) => {
+        setUsuario({
+            ...usuario,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    useEffect(() => {
+        document.getElementById("correo").focus();
+    }, [])
+
+    const iniciarSesion = async () => {
+        const data = {
+            correo: usuario.correo,
+            contrasenna: usuario.contrasenna
+        }
+        const response = await APIInvoke.invokePOST(`/login`, data)
+        if(response.data.length === 0) {
+            const msg = "Los datos son incorrectos";
+            swal({
+                title: "Error",
+                text: msg,
+                icon: 'error',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+                        className: 'btn-danger',
+                        closeModal: true
+                    }
+                }
+            })
+        } else {
+            localStorage.setItem('data', JSON.stringify(response.data));
+            navigate("/home");
+        }
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        iniciarSesion();
+    }
+
     return (
         <div className="hold-transition login-page">
             <div className="login-box">
@@ -11,14 +67,17 @@ const Login = () => {
                 <div className="card">
                     <div className="card-body login-card-body">
                         <p className="login-box-msg">Bienvenido, ingrese sus credenciales.</p>
-                        <form action="../../index3.html" method="post">
+                        <form onSubmit={onSubmit}>
                             <div className="input-group mb-3">
                                 <input
                                     type="email"
                                     className="form-control"
                                     placeholder="Correo"
-                                    id="email"
-                                    name="email"
+                                    id="correo"
+                                    name="correo"
+                                    value={correo}
+                                    onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -31,8 +90,11 @@ const Login = () => {
                                     type="password"
                                     className="form-control"
                                     placeholder="Contraseña"
-                                    id="password"
-                                    name="password"
+                                    id="contrasenna"
+                                    name="contrasenna"
+                                    value={contrasenna}
+                                    onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">

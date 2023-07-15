@@ -4,7 +4,7 @@ class APIInvoke {
     async invokeGET(resource, queryParams) {
 
         queryParams = queryParams || []
-        const queryString = queryParams.reduce((last, q, i) => last + `${i === 0 ? '?' : "&"}${q}`, '')
+        const queryString = Object.keys(queryParams).reduce((last, q, i) => last + `${i === 0 ? '?' : "&"}${q}`, '')
 
         const token = localStorage.getItem("token");
         let bearer;

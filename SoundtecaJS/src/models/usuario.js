@@ -8,11 +8,7 @@ var UsurioSchema = Schema({
     playlist: [
         {
             nombre: String,
-            canciones: [
-                {
-                    id: String
-                }
-            ]
+            canciones: []
         }
     ]
 }, {

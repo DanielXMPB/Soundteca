@@ -1,4 +1,4 @@
-var mongoose = require('../conexDB/conn');
+var mongoose = require('../connection/conn');
 var Cancion = require('../models/cancion');
 
 function listarTodo(req,res) {

@@ -1,4 +1,4 @@
-var mongoose = require('../Connection/conn');
+var mongoose = require('../connection/conn');
 var Usuario = require('../models/usuario');
 
 function registrarUsuario(req,res) {
@@ -22,9 +22,20 @@ function listarTodo(req,res) {
     });
 }
 
-
+function login(req, res) {
+    var correo = req.body.correo;
+    var contrasenna = req.body.contrasenna;
+    Usuario.find({correo: correo, contrasenna: contrasenna}).then( (usuario)=> {
+        res.status(200).json({ message: 'Correcto', status: true, data: usuario});
+        console.log("Correcto");
+    }).catch( error => {
+        res.status(400).json({message: error, status: false});
+        console.log("Error: ", error);
+    });
+}
 
 module.exports = {
     registrarUsuario,
-    listarTodo
+    listarTodo,
+    login
 }

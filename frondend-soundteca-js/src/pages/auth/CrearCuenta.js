@@ -27,6 +27,7 @@ const CrearCuenta = () => {
     const crearCuenta = async () => {
         if (contrasenna !== confirmar) {
             const msg = "Las contraseñas son diferentes.";
+
             swal({
                 title: "Error",
                 text: msg,
@@ -45,13 +46,41 @@ const CrearCuenta = () => {
             const data = {
                 nombre: usuario.nombre,
                 correo: usuario.correo,
-                contrasenna: usuario.contrasenna
+                contrasenna: usuario.contrasenna,
+                playlist: [
+                    {
+                        nombre: "favoritos",
+                        canciones: []
+                    }
+                ]
             }
-            const response = await APIInvoke.invokePOST('/registrar', data);
-            const mensaje = response.msg;
+            const response = await APIInvoke.invokePOST(`/registrar`, data);
+            const mensaje = response.message;
+            if (mensaje === 'Correcto') {
+                const msg = "Usuario creado correctamente";
+                swal({
+                    title: "Information",
+                    text: msg,
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'ok',
+                            value: true,
+                            visible: true,
+                            className: 'btn-danger',
+                            closeModal: true
+                        }
+                    }
+                });
 
-            if (mensaje === 'El usuario ya existe') {
-                const msg = "El usuario ya existe";
+                setUsuario({
+                    nombre: '',
+                    correo: '',
+                    contrasenna: '',
+                    confirmar: ''
+                })
+            } else {
+                const msg = "Ha ocurrido un error";
                 swal({
                     title: "Error",
                     text: msg,
@@ -61,11 +90,12 @@ const CrearCuenta = () => {
                             text: 'ok',
                             value: true,
                             visible: true,
-                            className: 'btn btn-danger',
+
+                            className: 'btn-danger',
                             closeModal: true
                         }
                     }
-                });
+                })
             }
         }
     }
@@ -83,8 +113,8 @@ const CrearCuenta = () => {
                 </div>
                 <div className="card">
                     <div className="card-body register-card-body">
-                        <p className="login-box-msg">Registrar usuario</p>
-                        <form onSubmit={onSubmit}>
+                        <p className="login-box-msg">Ingresar datos usuario</p>
+                        <form onSubmit={(onSubmit)}>
                             <div className="input-group mb-3">
                                 <input
                                     type="text"
@@ -94,6 +124,7 @@ const CrearCuenta = () => {
                                     id="nombre"
                                     value={nombre}
                                     onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -110,6 +141,7 @@ const CrearCuenta = () => {
                                     id="correo"
                                     value={correo}
                                     onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -126,6 +158,7 @@ const CrearCuenta = () => {
                                     id="contrasenna"
                                     value={contrasenna}
                                     onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -142,6 +175,7 @@ const CrearCuenta = () => {
                                     id="confirmar"
                                     value={confirmar}
                                     onChange={onChange}
+                                    required
                                 />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -149,13 +183,12 @@ const CrearCuenta = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className="social-auth-links text-center">
+                                <button type='submit' className="btn btn-block btn-primary">
+                                    Crear Cuenta
+                                </button>
+                            </div>
                         </form>
-                        <div className="social-auth-links text-center">
-                            <button to="#" className="btn btn-block btn-primary">
-                                <i class="fa-solid fa-circle-user"></i>
-                                Crear
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
