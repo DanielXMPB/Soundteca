@@ -11,5 +11,11 @@ router.get('/listarCancion/artista/:artista', ControllerCancion.listarPorArtista
 router.post('/registrar', ControllerUsuario.registrarUsuario);
 router.get('/listarUsuario', ControllerUsuario.listarTodo);
 router.post('/login', ControllerUsuario.login);
+router.put('/addFavoritos', ControllerUsuario.addFavorites);
+router.put('/addPlaylist', ControllerUsuario.addPlaylist);
+router.post('/listarPorId', ControllerUsuario.listarPorId);
+router.put('/eliminaPlaylist', ControllerUsuario.eliminaPlaylist);
+router.put('/actualizarNombre', ControllerUsuario.actualizarNombre);
+router.post('/listarFavoritos', ControllerUsuario.listarFavoritos);
 
 module.exports = router;

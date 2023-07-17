@@ -47,12 +47,8 @@ const CrearCuenta = () => {
                 nombre: usuario.nombre,
                 correo: usuario.correo,
                 contrasenna: usuario.contrasenna,
-                playlist: [
-                    {
-                        nombre: "favoritos",
-                        canciones: []
-                    }
-                ]
+                playlist: [],
+                favoritos: []
             }
             const response = await APIInvoke.invokePOST(`/registrar`, data);
             const mensaje = response.message;

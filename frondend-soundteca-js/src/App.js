@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import CrearCuenta from "./pages/auth/CrearCuenta";
 import Home from "./pages/Home";
+import Favoritos from "./pages/Favoritos";
+import Configuracion from "./pages/Configuracion";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
           <Route path="/" exact element = {<Login/>}/>
           <Route path="/crear-cuenta" exact element = {<CrearCuenta/>}/>
           <Route path="/home" exact element = {<Home/>}/>
+          <Route path="/favoritos" exact element = {<Favoritos/>}/>
+          <Route path="/configuracion" exact element = {<Configuracion/>}/>
         </Routes>
       </Router>
     </Fragment>

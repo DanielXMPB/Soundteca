@@ -1,15 +1,25 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faPlay, faListUl } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faPlay, faListUl } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
 
-const Home = () => {
+const Favoritos = () => {
+
+    const cargarUser = async () => {
+        const data = {
+            "_id": usuario._id
+        }
+        const response = await APIInvoke.invokePOST(`/listarPorId`, data);
+        const datos = JSON.stringify(response.data);
+        localStorage.setItem('data', datos);
+        const datosJSON = JSON.parse(datos);
+        setUsuario(datosJSON['0']);
+        cargarCanciones();
+    }
 
     // Cargar Usuario
     const [usuario, setUsuario] = useState({});
@@ -18,30 +28,35 @@ const Home = () => {
         const json = localStorage.getItem('data');
         const datos = JSON.parse(json);
         if (datos) {
-            setUsuario(datos['0']);
+            setUsuario(datos[0]);
         }
     }
 
     // Cargar Lista
-    const [canciones, setCanciones] = useState([]);
+    const [cancionesFavoritas, setCancionesFavoritas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
 
-    const cargarCanciones = async (pagina, cantidad) => {
-        const response = await APIInvoke.invokeGET(`/listarCancion`);
-        setCanciones(response.data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const cargarCanciones = async () => {
+        console.log(usuario._id)
+        const data = {
+            "id_usuario": usuario._id
+        }
+        const response = await APIInvoke.invokePOST(`/listarFavoritos`, data);
+        setCancionesFavoritas(response.data)
     }
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = canciones.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = cancionesFavoritas.slice(indexOfFirstItem, indexOfLastItem);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     }
 
     const renderPageNumbers = () => {
-        const pageNumbers = Math.ceil(canciones.length / itemsPerPage);
+        const pageNumbers = Math.ceil(cancionesFavoritas.length / itemsPerPage);
         return (
             <ul className="pagination pagination-sm m-0 float-right">
                 {Array.from(Array(pageNumbers), (el, index) => {
@@ -58,54 +73,16 @@ const Home = () => {
         );
     }
 
-    // Se carga al inicio de la pagina
     useEffect(() => {
-        cargarCanciones();
         getData();
-    }, [])
+    }, []);
 
-    const agregarFavorito = async (e, idCancion, idUsuario) => {
-        e.preventDefault();
-        const data = {
-            "id_usuario": idUsuario,
-            "id_cancion": idCancion
+    useEffect(() => {
+        if (usuario._id) {
+            cargarCanciones();
         }
-        const response = await APIInvoke.invokePUT(`/addFavoritos`, data);
-        if (response.message === 'Correcto') {
-            const msg = "Se ha agregado correctamente";
-            swal({
-                title: "Information",
-                text: msg,
-                icon: 'success',
-                buttons: {
-                    confirm: {
-                        text: 'ok',
-                        value: true,
-                        visible: true,
-                        className: 'btn-danger',
-                        closeModal: true
-                    }
-                }
-            });
-        } else {
-            const msg = "No se pudo agregar";
-            swal({
-                title: "Error",
-                text: msg,
-                icon: 'error',
-                buttons: {
-                    confirm: {
-                        text: 'ok',
-                        value: true,
-                        visible: true,
-
-                        className: 'btn-danger',
-                        closeModal: true
-                    }
-                }
-            })
-        }
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [usuario]);
 
     return (
         <div className="dark-mode">
@@ -119,7 +96,7 @@ const Home = () => {
                         <div className="card-body">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">Todas las canciones</h3>
+                                    <h3 className="card-title">Canciones Favoritas</h3>
                                 </div>
                                 <div className="card-body">
                                     <table className="table">
@@ -165,9 +142,8 @@ const Home = () => {
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button onClick={(e) => agregarFavorito(e, item._id, usuario._id)}
-                                                                type="button" className="btn btn-danger">
-                                                                    <FontAwesomeIcon icon={faHeart} />
+                                                                <button type="button" className="btn btn-danger">
+                                                                    <FontAwesomeIcon icon={faTrash} />
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
@@ -196,4 +172,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default Favoritos;

@@ -48,7 +48,8 @@ const Login = () => {
                 }
             })
         } else {
-            localStorage.setItem('data', JSON.stringify(response.data));
+            const datos = JSON.stringify(response.data)
+            localStorage.setItem('data', datos);
             navigate("/home");
         }
     }

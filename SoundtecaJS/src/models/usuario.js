@@ -5,12 +5,8 @@ var UsurioSchema = Schema({
     nombre: String,
     correo: String,
     contrasenna: String,
-    playlist: [
-        {
-            nombre: String,
-            canciones: []
-        }
-    ]
+    playlist: [],
+    favoritos: []
 }, {
     timetamps:true,
     versionKey:false
