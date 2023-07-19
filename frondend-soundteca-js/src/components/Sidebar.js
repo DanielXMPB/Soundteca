@@ -35,7 +35,7 @@ const Sidebar = ({nombre}) => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to={"#"} className="nav-link">
+                            <Link to={"/playlist"} className="nav-link">
                                 <FontAwesomeIcon icon={faListUl} />
                                 &nbsp;&nbsp;&nbsp;
                                 <p>Playlist</p>

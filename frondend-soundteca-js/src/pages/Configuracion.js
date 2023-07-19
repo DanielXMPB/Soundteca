@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -58,7 +58,8 @@ const Configuracion = () => {
             "id_usuario": usuario._id,
             "playlist": {
                 "nombre": agregarPlay.nombrePlaylist,
-                "canciones": []
+                "canciones": [],
+                "portada": "https://cdn-icons-png.flaticon.com/512/1776/1776601.png"
             }
         }
         const response = await APIInvoke.invokePUT(`/addPlaylist`, data);
@@ -302,9 +303,9 @@ const Configuracion = () => {
                                                         <table className="table">
                                                             <thead style={{ display: 'none' }}>
                                                                 <tr>
-                                                                    <th style={{ width: '90%' }}></th>
-                                                                    <th style={{ width: '5%' }}></th>
-                                                                    <th style={{ width: '5%' }}></th>
+                                                                    <th style={{ width: '0%%' }}></th>
+                                                                    <th style={{ width: '50%' }}></th>
+                                                                    <th style={{ width: '50%' }}></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -312,12 +313,10 @@ const Configuracion = () => {
                                                                     playlist.map(
                                                                         (item, index) =>
                                                                             <tr key={index}>
-                                                                                <td className="align-middle">{item.nombre}</td>
                                                                                 <td className="align-middle">
-                                                                                    <button type="button" className="btn btn-primary" style={{ display: 'none' }}>
-                                                                                        <FontAwesomeIcon icon={faPenToSquare} />
-                                                                                    </button>
+                                                                                    <img src={item.portada} alt="Portada de la canción" className="img-fluid" style={{ maxWidth: "40px" }} />
                                                                                 </td>
+                                                                                <td className="align-middle">{item.nombre}</td>
                                                                                 <td className="align-middle">
                                                                                     <button onClick={(e) => eliminarPlaylist(e, item.nombre, usuario._id)}
                                                                                         type="button" className="btn btn-danger">

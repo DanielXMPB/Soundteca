@@ -8,17 +8,20 @@ import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import Modal from '../components/Modal';
 
 const Home = () => {
 
     // Cargar Usuario
     const [usuario, setUsuario] = useState({});
+    const [playlist, setPlaylist] = useState([]);
 
     const getData = () => {
         const json = localStorage.getItem('data');
         const datos = JSON.parse(json);
         if (datos) {
             setUsuario(datos['0']);
+            setPlaylist(datos['0'].playlist)
         }
     }
 
@@ -112,7 +115,7 @@ const Home = () => {
             <div className="wrapper">
                 <Navbar></Navbar>
                 <Sidebar
-                    nombre = {usuario.nombre}
+                    nombre={usuario.nombre}
                 />
                 <div className="content-wrapper">
                     <section className="content">
@@ -160,18 +163,22 @@ const Home = () => {
                                                                 }
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-success">
-                                                                    <FontAwesomeIcon icon={faPlay} />
-                                                                </button>
+                                                                <Link
+                                                                    to={`/reproductor?cancionActual=${item._id}`}>
+                                                                    <button type="button" className="btn btn-success">
+                                                                        <FontAwesomeIcon icon={faPlay} />
+                                                                    </button>
+                                                                </Link>
                                                             </td>
                                                             <td className="align-middle">
                                                                 <button onClick={(e) => agregarFavorito(e, item._id, usuario._id)}
-                                                                type="button" className="btn btn-danger">
+                                                                    type="button" className="btn btn-danger">
                                                                     <FontAwesomeIcon icon={faHeart} />
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-primary">
+                                                                <button data-toggle="modal" data-target="#exampleModal"
+                                                                    type="button" className="btn btn-primary">
                                                                     <FontAwesomeIcon icon={faListUl} />
                                                                 </button>
                                                             </td>
@@ -190,6 +197,9 @@ const Home = () => {
                         </div>
                     </section>
                 </div>
+                <Modal
+                    playlist = {playlist}
+                />
                 <Footer></Footer>
             </div>
         </div>

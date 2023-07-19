@@ -72,6 +72,19 @@ function addFavorites(req, res) {
         });
 }
 
+function removeFavorite(req, res) {
+    var id_usuario = req.body.id_usuario;
+    var id_cancion = req.body.id_cancion;
+    Usuario.findOneAndUpdate({ _id: id_usuario }, { $pull: { favoritos: id_cancion } }, { new: true })
+        .then((usuario) => {
+            res.status(200).json({ message: 'Correcto', status: true, data: usuario });
+            console.log("Correcto");
+        }).catch(error => {
+            res.status(400).json({ message: error, status: false });
+            console.log("Error: ", error);
+        });
+}
+
 function listarFavoritos(req, res) {
     var id_usuario = req.body.id_usuario;
     Usuario.findById({ _id: id_usuario })
@@ -123,6 +136,7 @@ module.exports = {
     listarPorId,
     actualizarNombre,
     addFavorites,
+    removeFavorite,
     listarFavoritos,
     addPlaylist,
     eliminaPlaylist

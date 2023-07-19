@@ -12,6 +12,7 @@ router.post('/registrar', ControllerUsuario.registrarUsuario);
 router.get('/listarUsuario', ControllerUsuario.listarTodo);
 router.post('/login', ControllerUsuario.login);
 router.put('/addFavoritos', ControllerUsuario.addFavorites);
+router.put('/removeFavorite', ControllerUsuario.removeFavorite);
 router.put('/addPlaylist', ControllerUsuario.addPlaylist);
 router.post('/listarPorId', ControllerUsuario.listarPorId);
 router.put('/eliminaPlaylist', ControllerUsuario.eliminaPlaylist);

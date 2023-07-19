@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 
 const Favoritos = () => {
 
@@ -84,6 +85,50 @@ const Favoritos = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [usuario]);
 
+    const eliminarFavorito = async (e, idCancion, idUsuario) => {
+        e.preventDefault();
+        const data = {
+            "id_usuario": idUsuario,
+            "id_cancion": idCancion
+        }
+        const response = await APIInvoke.invokePUT(`/removeFavorite`, data);
+        if (response.message === 'Correcto') {
+            const msg = "Se ha agregado correctamente";
+            swal({
+                title: "Information",
+                text: msg,
+                icon: 'success',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+                        className: 'btn-danger',
+                        closeModal: true
+                    }
+                }
+            });
+            cargarUser();
+        } else {
+            const msg = "No se pudo agregar";
+            swal({
+                title: "Error",
+                text: msg,
+                icon: 'error',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+
+                        className: 'btn-danger',
+                        closeModal: true
+                    }
+                }
+            })
+        }
+    }
+
     return (
         <div className="dark-mode">
             <div className="wrapper">
@@ -142,7 +187,8 @@ const Favoritos = () => {
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-danger">
+                                                                <button onClick={(e) => eliminarFavorito(e, item._id, usuario._id)}
+                                                                type="button" className="btn btn-danger">
                                                                     <FontAwesomeIcon icon={faTrash} />
                                                                 </button>
                                                             </td>
