@@ -100,32 +100,6 @@ function listarFavoritos(req, res) {
         }).catch(error => {
             res.status(400).json({ message: error, status: false });
             console.log("Error: ", error);
-        });;
-}
-
-function addPlaylist(req, res) {
-    var id_usuario = req.body.id_usuario;
-    var playlist = req.body.playlist;
-    Usuario.findOneAndUpdate({ _id: id_usuario }, { $push: { playlist: playlist } }, { new: true })
-        .then((usuario) => {
-            res.status(200).json({ message: 'Correcto', status: true, data: usuario });
-            console.log("Correcto");
-        }).catch(error => {
-            res.status(400).json({ message: error, status: false });
-            console.log("Error: ", error);
-        });
-}
-
-function eliminaPlaylist(req, res) {
-    var id_usuario = req.body.id_usuario;
-    var nombre = req.body.nombre;
-    Usuario.updateOne({ _id: id_usuario }, { $pull: { playlist: { nombre: nombre } } })
-        .then((usuario) => {
-            res.status(200).json({ message: 'Correcto', status: true, data: usuario });
-            console.log("Correcto");
-        }).catch(error => {
-            res.status(400).json({ message: error, status: false });
-            console.log("Error: ", error);
         });
 }
 
@@ -137,7 +111,5 @@ module.exports = {
     actualizarNombre,
     addFavorites,
     removeFavorite,
-    listarFavoritos,
-    addPlaylist,
-    eliminaPlaylist
+    listarFavoritos
 }

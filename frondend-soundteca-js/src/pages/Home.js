@@ -9,6 +9,9 @@ import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import Modal from '../components/Modal';
+import ModalReproducir from "../components/ModalReproducir";
+import SearchNombre from "../components/SearchNombre";
+import SearchArtista from "../components/SearchArtista";
 
 const Home = () => {
 
@@ -16,12 +19,16 @@ const Home = () => {
     const [usuario, setUsuario] = useState({});
     const [playlist, setPlaylist] = useState([]);
 
-    const getData = () => {
+    const getData = async () => {
         const json = localStorage.getItem('data');
         const datos = JSON.parse(json);
         if (datos) {
             setUsuario(datos['0']);
-            setPlaylist(datos['0'].playlist)
+            const data = {
+                "_id": datos['0']._id
+            }
+            const response1 = await APIInvoke.invokePOST(`/listarPlaylist`, data);
+            setPlaylist(response1.data)
         }
     }
 
@@ -110,6 +117,77 @@ const Home = () => {
         }
     }
 
+    const [cancionAgregar, setCancionAgregar] = useState({});
+
+    const agregarCancion = (e, idCancion) => {
+        e.preventDefault();
+        setCancionAgregar(idCancion)
+    }
+
+    const [reprucionActual, setReprucionActual] = useState({
+        artistas: ["", ""]
+    });
+
+    const agregarReproduccion = (e, cancion) => {
+        e.preventDefault();
+        setReprucionActual(cancion)
+    }
+
+
+    // buscar por nombre
+    const [nombreCancion, setNombreCancion] = useState({
+        nombre: '',
+    });
+
+    const { nombre } = nombreCancion;
+
+    const onChangeBuscarNombre = (e) => {
+        setNombreCancion({
+            ...nombreCancion,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const buscarNombre = async () => {
+        const response = await APIInvoke.invokeGET(`/listarCancion/nombre/` + nombreCancion.nombre);
+        const mensaje = response.message;
+        if (mensaje === 'Correcto') {
+            setCanciones(response.data)
+        }
+    }
+
+    const onSubmitNombre = (e) => {
+        e.preventDefault();
+        buscarNombre();
+    }
+
+    // buscar por autor
+    const [autorCancion, setAutorCancion] = useState({
+        autor: '',
+    });
+
+    const { autor } = autorCancion;
+
+    const onChangeBuscarAutor = (e) => {
+        setAutorCancion({
+            ...autorCancion,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const buscarAutor = async () => {
+        const response = await APIInvoke.invokeGET(`/listarCancion/artista/` + autorCancion.autor);
+        const mensaje = response.message;
+        if (mensaje === 'Correcto') {
+            setCanciones(response.data)
+        }
+    }
+
+    const onSubmitAutor = (e) => {
+        e.preventDefault();
+        buscarAutor();
+    }
+
     return (
         <div className="dark-mode">
             <div className="wrapper">
@@ -121,8 +199,18 @@ const Home = () => {
                     <section className="content">
                         <div className="card-body">
                             <div className="card">
-                                <div className="card-header">
-                                    <h3 className="card-title">Todas las canciones</h3>
+                                <div className="card-header" style={{ display: 'flex' }}>
+                                    <h3 className="card-title" style={{ marginRight: '25px' }}>Todas las canciones</h3>
+                                    <SearchArtista
+                                        onSubmitAutor={onSubmitAutor}
+                                        autor={autor}
+                                        onChangeBuscarAutor={onChangeBuscarAutor}
+                                    />
+                                    <SearchNombre
+                                        onSubmitNombre={onSubmitNombre}
+                                        nombre={nombre}
+                                        onChangeBuscarNombre={onChangeBuscarNombre}
+                                    />
                                 </div>
                                 <div className="card-body">
                                     <table className="table">
@@ -163,12 +251,11 @@ const Home = () => {
                                                                 }
                                                             </td>
                                                             <td className="align-middle">
-                                                                <Link
-                                                                    to={`/reproductor?cancionActual=${item._id}`}>
-                                                                    <button type="button" className="btn btn-success">
-                                                                        <FontAwesomeIcon icon={faPlay} />
-                                                                    </button>
-                                                                </Link>
+                                                                <button onClick={(e) => agregarReproduccion(e, item)}
+                                                                    data-toggle="modal" data-target="#modalReproduciir"
+                                                                    type="button" className="btn btn-success">
+                                                                    <FontAwesomeIcon icon={faPlay} />
+                                                                </button>
                                                             </td>
                                                             <td className="align-middle">
                                                                 <button onClick={(e) => agregarFavorito(e, item._id, usuario._id)}
@@ -177,7 +264,8 @@ const Home = () => {
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button data-toggle="modal" data-target="#exampleModal"
+                                                                <button onClick={(e) => agregarCancion(e, item._id)}
+                                                                    data-toggle="modal" data-target="#exampleModal"
                                                                     type="button" className="btn btn-primary">
                                                                     <FontAwesomeIcon icon={faListUl} />
                                                                 </button>
@@ -198,7 +286,11 @@ const Home = () => {
                     </section>
                 </div>
                 <Modal
-                    playlist = {playlist}
+                    playlist={playlist}
+                    cancionAgregar={cancionAgregar}
+                />
+                <ModalReproducir
+                    reproduccion={reprucionActual}
                 />
                 <Footer></Footer>
             </div>

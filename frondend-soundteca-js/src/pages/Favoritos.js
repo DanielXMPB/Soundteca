@@ -7,6 +7,8 @@ import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import Modal from '../components/Modal';
+import ModalReproducir from "../components/ModalReproducir";
 
 const Favoritos = () => {
 
@@ -19,17 +21,28 @@ const Favoritos = () => {
         localStorage.setItem('data', datos);
         const datosJSON = JSON.parse(datos);
         setUsuario(datosJSON['0']);
+        const data1 = {
+            _id: datosJSON['0']._id
+        }
+        const response1 = await APIInvoke.invokePOST(`/listarPlaylist`, data1);
+        setPlaylist(response1.data)
         cargarCanciones();
     }
 
     // Cargar Usuario
     const [usuario, setUsuario] = useState({});
+    const [playlist, setPlaylist] = useState([]);
 
-    const getData = () => {
+    const getData = async () => {
         const json = localStorage.getItem('data');
         const datos = JSON.parse(json);
         if (datos) {
             setUsuario(datos[0]);
+            const data = {
+                "_id": datos['0']._id
+            }
+            const response1 = await APIInvoke.invokePOST(`/listarPlaylist`, data);
+            setPlaylist(response1.data)
         }
     }
 
@@ -82,7 +95,7 @@ const Favoritos = () => {
         if (usuario._id) {
             cargarCanciones();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [usuario]);
 
     const eliminarFavorito = async (e, idCancion, idUsuario) => {
@@ -93,7 +106,7 @@ const Favoritos = () => {
         }
         const response = await APIInvoke.invokePUT(`/removeFavorite`, data);
         if (response.message === 'Correcto') {
-            const msg = "Se ha agregado correctamente";
+            const msg = "Se ha elimino correctamente";
             swal({
                 title: "Information",
                 text: msg,
@@ -110,7 +123,7 @@ const Favoritos = () => {
             });
             cargarUser();
         } else {
-            const msg = "No se pudo agregar";
+            const msg = "No se pudo eliminar";
             swal({
                 title: "Error",
                 text: msg,
@@ -129,12 +142,28 @@ const Favoritos = () => {
         }
     }
 
+    const [cancionAgregar, setCancionAgregar] = useState({});
+
+    const agregarCancion = (e, idCancion) => {
+        e.preventDefault();
+        setCancionAgregar(idCancion)
+    }
+
+    const [reprucionActual, setReprucionActual] = useState({
+        artistas: ["", ""]
+    });
+
+    const agregarReproduccion = (e, cancion) => {
+        e.preventDefault();
+        setReprucionActual(cancion)
+    }
+
     return (
         <div className="dark-mode">
             <div className="wrapper">
                 <Navbar></Navbar>
                 <Sidebar
-                    nombre = {usuario.nombre}
+                    nombre={usuario.nombre}
                 />
                 <div className="content-wrapper">
                     <section className="content">
@@ -182,18 +211,22 @@ const Favoritos = () => {
                                                                 }
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-success">
+                                                                <button onClick={(e) => agregarReproduccion(e, item)}
+                                                                    data-toggle="modal" data-target="#modalReproduciir"
+                                                                    type="button" className="btn btn-success">
                                                                     <FontAwesomeIcon icon={faPlay} />
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
                                                                 <button onClick={(e) => eliminarFavorito(e, item._id, usuario._id)}
-                                                                type="button" className="btn btn-danger">
+                                                                    type="button" className="btn btn-danger">
                                                                     <FontAwesomeIcon icon={faTrash} />
                                                                 </button>
                                                             </td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-primary">
+                                                                <button onClick={(e) => agregarCancion(e, item._id)}
+                                                                    data-toggle="modal" data-target="#exampleModal"
+                                                                    type="button" className="btn btn-primary">
                                                                     <FontAwesomeIcon icon={faListUl} />
                                                                 </button>
                                                             </td>
@@ -212,6 +245,14 @@ const Favoritos = () => {
                         </div>
                     </section>
                 </div>
+                <Modal
+                    playlist={playlist}
+                    cancionAgregar={cancionAgregar}
+                />
+                <ModalReproducir
+                    reproduccion={reprucionActual}
+                />
+                <Footer></Footer>
                 <Footer></Footer>
             </div>
         </div>

@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import swal from "sweetalert";
+import FormNombre from "../components/FormNombre";
 
 const Configuracion = () => {
 
@@ -18,19 +19,27 @@ const Configuracion = () => {
         localStorage.setItem('data', datos);
         const datosJSON = JSON.parse(datos);
         setUsuario(datosJSON['0'])
-        setPlaylist(datosJSON['0'].playlist)
+        const data1 = {
+            _id: datosJSON['0']._id
+        }
+        const response1 = await APIInvoke.invokePOST(`/listarPlaylist`, data1);
+        setPlaylist(response1.data)
     }
 
     // Cargar Usuario
     const [usuario, setUsuario] = useState({});
     const [playlist, setPlaylist] = useState([]);
 
-    const getData = () => {
+    const getData = async () => {
         const json = localStorage.getItem('data');
         const datos = JSON.parse(json);
         if (datos) {
             setUsuario(datos['0']);
-            setPlaylist(datos['0'].playlist)
+            const data = {
+                _id: datos['0']._id
+            }
+            const response = await APIInvoke.invokePOST(`/listarPlaylist`, data);
+            setPlaylist(response.data)
         }
     }
 
@@ -172,11 +181,11 @@ const Configuracion = () => {
     }
 
     // Eliminar playlist
-    const eliminarPlaylist = async (e, nombre, idUsuario) => {
+    const eliminarPlaylist = async (e, idPlaylist, idUsuario) => {
         e.preventDefault();
         const data = {
             "id_usuario": idUsuario,
-            "nombre": nombre
+            "id_playlist": idPlaylist
         }
         const response = await APIInvoke.invokePUT(`/eliminaPlaylist`, data);
         if (response.message === 'Correcto') {
@@ -238,21 +247,11 @@ const Configuracion = () => {
                                                     <h3 className="card-title">Actualizar Datos</h3>
                                                 </div>
                                                 <div className="card-body">
-                                                    <form onSubmit={onSubmitNombre}>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInputPassword1">Nombre</label>
-                                                            <input className="form-control"
-                                                                placeholder="Nombre"
-                                                                name="nombreUsuario"
-                                                                id="nombreUsuario"
-                                                                value={nombreUsuario}
-                                                                onChange={onChangeActualizarNombre}
-                                                                required
-                                                            />
-                                                            <br />
-                                                            <button type="submit" className="btn btn-primary">Actualizar</button>
-                                                        </div>
-                                                    </form>
+                                                    <FormNombre
+                                                        onSubmitNombre={onSubmitNombre}
+                                                        nombreUsuario={nombreUsuario}
+                                                        onChangeActualizarNombre={onChangeActualizarNombre}
+                                                    />
                                                     <div className="form-group">
                                                         <label htmlFor="exampleInputEmail1">Correo</label>
                                                         <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Correo" />
@@ -318,7 +317,7 @@ const Configuracion = () => {
                                                                                 </td>
                                                                                 <td className="align-middle">{item.nombre}</td>
                                                                                 <td className="align-middle">
-                                                                                    <button onClick={(e) => eliminarPlaylist(e, item.nombre, usuario._id)}
+                                                                                    <button onClick={(e) => eliminarPlaylist(e, item._id, usuario._id)}
                                                                                         type="button" className="btn btn-danger">
                                                                                         <FontAwesomeIcon icon={faTrash} />
                                                                                     </button>

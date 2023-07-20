@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faListUl } from '@fortawesome/free-solid-svg-icons'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-//import APIInvoke from "../utils/APIInvoke";
+import APIInvoke from "../utils/APIInvoke";
 import { Link } from "react-router-dom";
+import ModalPlaylist from "../components/ModalPlaylist";
 
 const Playlist = () => {
 
@@ -27,7 +28,11 @@ const Playlist = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const cargarPlaylist = async () => {
-        setPlaylist(usuario.playlist)
+        const data = {
+            "_id": usuario._id
+        }
+        const response = await APIInvoke.invokePOST(`/listarPlaylist`, data);
+        setPlaylist(response.data)
     }
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -67,6 +72,18 @@ const Playlist = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [usuario]);
 
+    const [listaActual, setListaActual] = useState([])
+    const [idListaActual, setIdListaActual] = useState([])
+
+    const agregarlistaActual = async (e, idPlaylist) => {
+        e.preventDefault();
+        setIdListaActual(idPlaylist)
+        const data = {
+            id_playlist: idPlaylist
+        }
+        const response = await APIInvoke.invokePOST(`/listsarCancionesPlaylist`, data)
+        setListaActual(response.data)
+    }
 
     return (
         <div className="dark-mode">
@@ -80,7 +97,7 @@ const Playlist = () => {
                         <div className="card-body">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">Canciones Favoritas</h3>
+                                    <h3 className="card-title">Todas las Playlist</h3>
                                 </div>
                                 <div className="card-body">
                                     <table className="table">
@@ -101,13 +118,10 @@ const Playlist = () => {
                                                             </td>
                                                             <td className="align-middle">{item.nombre}</td>
                                                             <td className="align-middle">
-                                                                <button type="button" className="btn btn-success">
+                                                                <button onClick={(e) => agregarlistaActual(e, item._id)}
+                                                                    data-toggle="modal" data-target="#modalPlaylist"
+                                                                    type="button" className="btn btn-success">
                                                                     <FontAwesomeIcon icon={faPlay} />
-                                                                </button>
-                                                            </td>
-                                                            <td className="align-middle">
-                                                                <button type="button" className="btn btn-primary">
-                                                                    <FontAwesomeIcon icon={faListUl} />
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -125,6 +139,12 @@ const Playlist = () => {
                         </div>
                     </section>
                 </div>
+                <ModalPlaylist
+                    canciones={listaActual}
+                    idListaActual={idListaActual}
+                    cargarPlaylist={cargarPlaylist}
+                    agregarlistaActual={agregarlistaActual}
+                />
                 <Footer></Footer>
             </div>
         </div>
