@@ -59,6 +59,20 @@ function actualizarNombre(req, res) {
         });
 }
 
+function actualizarCorreo(req, res) {
+    var id_usuario = req.body.id_usuario;
+    var correo = req.body.correo;
+    Usuario.findOneAndUpdate({ _id: id_usuario }, { correo: correo }, { new: false })
+        .then((usuario) => {
+            res.status(200).json({ message: 'Correcto', status: true, data: usuario });
+            console.log("Correcto");
+        }).catch(error => {
+            res.status(400).json({ message: error, status: false });
+            console.log("Error: ", error);
+        });
+}
+
+
 function addFavorites(req, res) {
     var id_usuario = req.body.id_usuario;
     var id_cancion = req.body.id_cancion;
@@ -109,6 +123,7 @@ module.exports = {
     listarTodo,
     listarPorId,
     actualizarNombre,
+    actualizarCorreo,
     addFavorites,
     removeFavorite,
     listarFavoritos

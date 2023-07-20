@@ -1,15 +1,15 @@
-const FormNombre = ({onSubmitNombre, nombreUsuario, onChangeActualizarNombre}) => {
+const FormUsuario = ({ name , onSubmit, propUsuario, onChangeActualizar}) => {
     return (
         <div>
-            <form onSubmit={onSubmitNombre}>
+            <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword1">Nombre</label>
                     <input className="form-control"
-                        placeholder="Nombre"
-                        name="nombreUsuario"
-                        id="nombreUsuario"
-                        value={nombreUsuario}
-                        onChange={onChangeActualizarNombre}
+                        placeholder={name}
+                        name={`${name}Usuario`}
+                        id={`${name}Usuario`}
+                        value={propUsuario}
+                        onChange={onChangeActualizar}
                         required
                     />
                     <br />
@@ -20,4 +20,4 @@ const FormNombre = ({onSubmitNombre, nombreUsuario, onChangeActualizarNombre}) =
     );
 }
 
-export default FormNombre;
+export default FormUsuario;

@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import APIInvoke from "../utils/APIInvoke";
 import swal from "sweetalert";
-import FormNombre from "../components/FormNombre";
+import FormUsuario from "../components/FormUsuario";
 
 const Configuracion = () => {
 
@@ -116,7 +116,72 @@ const Configuracion = () => {
         agregrarPlaylist();
     }
 
-    //Actualizar nombre usuario
+    //Actualizar correo de  usuario
+    const [actulizarCorreoUsuario, setActulizarCorreo] = useState({
+        correoUsuario: '',
+    });
+
+    const { correoUsuario } = actulizarCorreoUsuario;
+
+    const onChangeActualizarCorreo = (e) => {
+        setActulizarCorreo({
+            ...actulizarCorreoUsuario,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const actualizaCorreo = async (correo) => {
+        const data = {
+            "id_usuario": usuario._id,
+            "correo": actulizarCorreoUsuario.correoUsuario
+        }
+        const response = await APIInvoke.invokePUT(`/actualizarCorreo`, data);
+        const mensaje = response.message;
+        if (mensaje === 'Correcto') {
+            const msg = "Se ha actualizo correctamente";
+            swal({
+                title: "Information",
+                text: msg,
+                icon: 'success',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+                        className: 'btn-danger',
+                        closeModal: true
+                    }
+                }
+            });
+            cargarUser();
+        } else {
+            const msg = "Ha ocurrido un error";
+            swal({
+                title: "Error",
+                text: msg,
+                icon: 'error',
+                buttons: {
+                    confirm: {
+                        text: 'ok',
+                        value: true,
+                        visible: true,
+
+                        className: 'btn-danger',
+                        closeModal: true
+                    }
+                }
+            })
+
+        }
+    }
+
+    const onSubmitCorreo = (e) => {
+        e.preventDefault();
+        actualizaCorreo();
+    }
+
+
+    //Actualizar Nombre de Usuario
     const [actulizarNombreUsuario, setActulizarNombre] = useState({
         nombreUsuario: '',
     });
@@ -179,6 +244,7 @@ const Configuracion = () => {
         e.preventDefault();
         actualizaNombre();
     }
+
 
     // Eliminar playlist
     const eliminarPlaylist = async (e, idPlaylist, idUsuario) => {
@@ -247,17 +313,18 @@ const Configuracion = () => {
                                                     <h3 className="card-title">Actualizar Datos</h3>
                                                 </div>
                                                 <div className="card-body">
-                                                    <FormNombre
-                                                        onSubmitNombre={onSubmitNombre}
-                                                        nombreUsuario={nombreUsuario}
-                                                        onChangeActualizarNombre={onChangeActualizarNombre}
+                                                    <FormUsuario
+                                                        name = "nombre"
+                                                        onSubmit={onSubmitNombre}
+                                                        propUsuario={nombreUsuario}
+                                                        onChangeActualizar={onChangeActualizarNombre}
                                                     />
-                                                    <div className="form-group">
-                                                        <label htmlFor="exampleInputEmail1">Correo</label>
-                                                        <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Correo" />
-                                                        <br />
-                                                        <button type="submit" className="btn btn-primary">Actualizar</button>
-                                                    </div>
+                                                    <FormUsuario
+                                                        name = "correo"
+                                                        onSubmit={onSubmitCorreo}
+                                                        propUsuario={correoUsuario}
+                                                        onChangeActualizar={onChangeActualizarCorreo}
+                                                    />
                                                     <div className="form-group">
                                                         <label htmlFor="exampleInputPassword1">Contraseña</label>
                                                         <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Contraseña" />
