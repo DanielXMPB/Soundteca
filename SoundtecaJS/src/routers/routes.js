@@ -15,6 +15,7 @@ router.post('/registrar', ControllerUsuario.registrarUsuario);
 router.get('/listarUsuario', ControllerUsuario.listarTodo);
 router.post('/listarPorId', ControllerUsuario.listarPorId);
 router.put('/actualizarNombre', ControllerUsuario.actualizarNombre);
+router.put('/actualizarCorreo', ControllerUsuario.actualizarCorreo);
 router.put('/addFavoritos', ControllerUsuario.addFavorites);
 router.put('/removeFavorite', ControllerUsuario.removeFavorite);
 router.post('/listarFavoritos', ControllerUsuario.listarFavoritos);

@@ -1,4 +1,4 @@
-const FormUsuario = ({ name , onSubmit, propUsuario, onChangeActualizar}) => {
+const FormUsuario = ({ name, onSubmit, propUsuario, onChangeActualizar}) => {
     return (
         <div>
             <form onSubmit={onSubmit}>
